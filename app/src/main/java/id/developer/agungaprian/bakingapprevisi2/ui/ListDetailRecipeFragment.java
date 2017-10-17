@@ -25,7 +25,7 @@ public class ListDetailRecipeFragment extends Fragment {
     ArrayList<Recipes> recipes;
     String recipesName;
     RecyclerView recyclerView;
-    TextView textView;
+    TextView ingredient , ingredientTitle;
     RecipeStepCardAdapter recipeDetailCardAdapter;
 
     public ListDetailRecipeFragment() {
@@ -46,13 +46,17 @@ public class ListDetailRecipeFragment extends Fragment {
 
         //inflate layout
         View rootView = inflater.inflate(R.layout.fragment_list_detail_recipe, container, false);
-        textView = (TextView)rootView.findViewById(R.id.recipe_detail_text);
+        ingredient = (TextView)rootView.findViewById(R.id.recipe_detail_text);
+        ingredientTitle = (TextView)rootView.findViewById(R.id.ingredient_titile);
+
+        ingredientTitle.setText(recipesName +" Ingredient");
 
         for (Ingredients data : ingredients){
-            textView.append("\u2022 "+ data.getIngredient()+"");
-            textView.append("\t\t\t "+data.getQuantity().toString()+"");
-            textView.append("\t "+ data.getMeasure()+"\n");
+            ingredient.append("\u2022 "+ data.getIngredient()+"");
+            ingredient.append("\t\t "+data.getQuantity().toString()+"");
+            ingredient.append("\t "+ data.getMeasure()+"\n");
         }
+
 
         //add recyclerview layout
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview_list_detail_recipe);
