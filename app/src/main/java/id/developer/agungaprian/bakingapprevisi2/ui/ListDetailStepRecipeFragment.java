@@ -128,7 +128,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
             initializePlayer(Uri.parse(steps.get(selectedIndex).getVideoURL()));
 
             if (rootView.findViewWithTag("sw600dp-land-recipe_step_detail")!=null) {
-                getActivity().findViewById(R.id.list_recipe_detail_framgment).setLayoutParams(new LinearLayout.LayoutParams(-1,-2));
+                getActivity().findViewById(R.id.list_recipe_detail_fragment).setLayoutParams(new LinearLayout.LayoutParams(-1,-2));
                 simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
             }
             else if (isInLandscapeMode(getContext())){

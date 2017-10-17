@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTintMode="src_over"
-            android:background="@drawable/ic_action_name_left" />
+            android:background="@mipmap/ic_launcher" />
 
         <Button
             android:id="@+id/nextStep"
@@ -54,7 +54,7 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:backgroundTintMode="src_over"
-            android:background="@drawable/ic_action_name" />
+            android:background="@mipmap/ic_launcher" />
     </LinearLayout>
 
 

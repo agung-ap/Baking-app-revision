@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,6 +55,16 @@ public class RecipeStepCardAdapter extends RecyclerView.Adapter<RecipeStepCardAd
 
         holder.steps.setText(id);
         holder.shortDescription.setText(data.get(position).getShortDescription());
+
+        String videoUrl = data.get(position).getVideoURL();
+        if (videoUrl.isEmpty()){
+            holder.playIcon.setVisibility(View.GONE);
+
+        }else {
+            Picasso.with(context)
+                    .load(R.drawable.play_icon)
+                    .into(holder.playIcon);
+        }
     }
 
     @Override
@@ -61,11 +74,13 @@ public class RecipeStepCardAdapter extends RecyclerView.Adapter<RecipeStepCardAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView steps, shortDescription;
+        ImageView playIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
             steps = (TextView)itemView.findViewById(R.id.id_list_step);
             shortDescription = (TextView)itemView.findViewById(R.id.id_title_step);
+            playIcon = (ImageView)itemView.findViewById(R.id.play_icon);
         }
 
         @Override

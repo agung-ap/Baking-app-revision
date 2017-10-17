@@ -39,7 +39,7 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
             fragment.setArguments(getBundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .add(R.id.list_recipe_detail_framgment, fragment)
+                    .add(R.id.list_recipe_detail_fragment, fragment)
                     .commit();
         }else {
             recipesName = savedInstanceState.getString("title");
@@ -72,10 +72,37 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
     @Override
     public void itemClickListener(List<Steps> stepOut, int itemPosition, String recipeName) {
 
+
+        /*if (findViewById(R.id.recipe_linear_layout).getTag()!=null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container2, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
+                    .commit();
+
+        }
+        else {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
+                    .commit();
+        }*/
     }
 
     @Override
     public void onListItemClick(List<Steps> allSteps, int itemPosition, String recipeName) {
+        final ListDetailStepRecipeFragment fragment = new ListDetailStepRecipeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        getSupportActionBar().setTitle(recipeName);
+
+        Bundle stepBundle = new Bundle();
+        stepBundle.putParcelableArrayList(getString(R.string.selected_recipe),(ArrayList<Steps>) allSteps);
+        stepBundle.putInt("selected_index",itemPosition);
+        stepBundle.putString("Title",recipeName);
+        fragment.setArguments(stepBundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.list_recipe_detail_fragment, fragment)
+                .commit();
+
 
     }
 }
