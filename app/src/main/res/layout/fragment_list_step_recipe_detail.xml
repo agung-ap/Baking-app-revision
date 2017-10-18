@@ -25,6 +25,7 @@
         android:layout_below="@+id/player_view"/>
 
     <TextView
+        android:id="@+id/no_video"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="description of recipe"
-        android:layout_below="@+id/thumb_image"/>
+        android:layout_below="@+id/no_video"/>
 
     <LinearLayout
         android:layout_marginBottom="8dp"
