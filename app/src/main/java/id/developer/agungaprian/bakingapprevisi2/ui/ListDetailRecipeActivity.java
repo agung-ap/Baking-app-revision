@@ -80,7 +80,7 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
         Bundle stepBundle = new Bundle();
         stepBundle.putParcelableArrayList(getString(R.string.selected_recipe),(ArrayList<Steps>) stepOut);
         stepBundle.putInt("selected_index",itemPosition);
-        stepBundle.putString("Title",recipesName);
+        stepBundle.putString("title",recipesName);
         fragment.setArguments(stepBundle);
 
         fragmentManager.beginTransaction()

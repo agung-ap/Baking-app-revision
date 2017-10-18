@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/playerView"
+        android:id="@+id/player_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
@@ -16,19 +15,19 @@
         android:layout_alignParentTop="true"/>
 
     <ImageView
-        android:id="@+id/thumbImage"
+        android:id="@+id/thumb_image"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/thumb_image"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/playerView"/>
+        android:layout_below="@+id/player_view"/>
 
     <TextView
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/thumbImage"
+        android:layout_below="@+id/thumb_image"
         android:text="no video available"
         android:layout_centerHorizontal="true"/>
 
@@ -41,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="description of recipe"
-        android:layout_below="@+id/thumbImage"/>
+        android:layout_below="@+id/thumb_image"/>
 
     <LinearLayout
         android:layout_marginBottom="8dp"
@@ -51,19 +50,17 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/previousStep"
+            android:id="@+id/previous_button"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Step 1"/>
 
         <Button
+            android:id="@+id/next_button"
             android:layout_weight="1"
-            android:id="@+id/nextStep"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="step 2"/>
     </LinearLayout>
-
-
 </RelativeLayout>

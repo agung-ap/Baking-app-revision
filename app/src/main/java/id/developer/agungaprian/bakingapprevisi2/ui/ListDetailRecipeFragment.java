@@ -37,6 +37,7 @@ public class ListDetailRecipeFragment extends Fragment {
 
         if (savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList("selected_recipe");
+
         }else {
             recipes = getArguments().getParcelableArrayList("selected_recipe");
         }
