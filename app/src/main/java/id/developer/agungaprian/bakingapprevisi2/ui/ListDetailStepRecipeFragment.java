@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 
@@ -27,9 +29,10 @@ public class ListDetailStepRecipeFragment extends Fragment {
     private ArrayList<Steps> steps;
     private String videoLink;
 
-    private MediaPlayer mediaPlayer;
+    public MediaPlayer mediaPlayer;
     private SimpleExoPlayerView playerView;
     private ComponentListener componentListener;
+    private SimpleExoPlayer player;
 
     private int selectedIndex;
     private String recipeName;
@@ -68,11 +71,43 @@ public class ListDetailStepRecipeFragment extends Fragment {
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         videoLink = steps.get(selectedIndex).getVideoURL();
 
-        mediaPlayer = new MediaPlayer(playerView, componentListener, videoLink, getContext());
+        mediaPlayer = new MediaPlayer(playerView, player,componentListener, videoLink, getContext());
 
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            mediaPlayer.initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mediaPlayer.hideSystemUi();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            mediaPlayer.initializePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            mediaPlayer.releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            mediaPlayer.releasePlayer();
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle currentState) {

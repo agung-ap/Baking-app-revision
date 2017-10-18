@@ -50,14 +50,15 @@ public class MediaPlayer {
     private int currentWindow;
     private boolean playWhenReady = true;
 
-    public MediaPlayer(SimpleExoPlayerView playerView, ComponentListener componentListener , String videoUrl, Context context) {
+    public MediaPlayer(SimpleExoPlayerView playerView,SimpleExoPlayer player ,ComponentListener componentListener , String videoUrl, Context context) {
         this.playerView = playerView;
         this.componentListener = componentListener;
         this.videoUrl = videoUrl;
         this.context = context;
+        this.player = player;
     }
 
-    private void initializePlayer() {
+    public void initializePlayer() {
         if (player == null) {
             // a factory to create an AdaptiveVideoTrackSelection
             TrackSelection.Factory adaptiveTrackSelectionFactory =
@@ -76,7 +77,7 @@ public class MediaPlayer {
         player.prepare(mediaSource, true, false);
     }
 
-    private void releasePlayer() {
+    public void releasePlayer() {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
@@ -97,7 +98,7 @@ public class MediaPlayer {
         return new DashMediaSource(uri, dataSourceFactory, dashChunkSourceFactory, null, null);
     }
 
-    private void hideSystemUi() {
+    public void hideSystemUi() {
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
