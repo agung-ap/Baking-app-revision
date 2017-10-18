@@ -19,8 +19,9 @@ import id.developer.agungaprian.bakingapprevisi2.util.RecipeDetailItemClickListe
  */
 
 public class ListDetailRecipeActivity extends AppCompatActivity implements
-        RecipeDetailItemClickListener, ListDetailStepRecipeFragment.ListItemClickListener{
+        RecipeDetailItemClickListener{
     private ArrayList<Recipes> recipes;
+    ActionBar actionBar;
     String recipesName;
 
     @Override
@@ -46,7 +47,7 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
         }
 
         //create home button in actionbar
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(recipesName);
@@ -71,7 +72,20 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
 
     @Override
     public void itemClickListener(List<Steps> stepOut, int itemPosition, String recipeName) {
+        ListDetailStepRecipeFragment fragment = new ListDetailStepRecipeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
+        actionBar.setTitle(recipeName);
+
+        Bundle stepBundle = new Bundle();
+        stepBundle.putParcelableArrayList(getString(R.string.selected_recipe),(ArrayList<Steps>) stepOut);
+        stepBundle.putInt("selected_index",itemPosition);
+        stepBundle.putString("Title",recipeName);
+        fragment.setArguments(stepBundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.list_recipe_detail_fragment, fragment)
+                .commit();
 
         /*if (findViewById(R.id.recipe_linear_layout).getTag()!=null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {
             fragmentManager.beginTransaction()
@@ -84,25 +98,5 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_container, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
                     .commit();
         }*/
-    }
-
-    @Override
-    public void onListItemClick(List<Steps> allSteps, int itemPosition, String recipeName) {
-        final ListDetailStepRecipeFragment fragment = new ListDetailStepRecipeFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        getSupportActionBar().setTitle(recipeName);
-
-        Bundle stepBundle = new Bundle();
-        stepBundle.putParcelableArrayList(getString(R.string.selected_recipe),(ArrayList<Steps>) allSteps);
-        stepBundle.putInt("selected_index",itemPosition);
-        stepBundle.putString("Title",recipeName);
-        fragment.setArguments(stepBundle);
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.list_recipe_detail_fragment, fragment)
-                .commit();
-
-
     }
 }
