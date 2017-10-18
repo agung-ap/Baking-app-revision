@@ -19,7 +19,7 @@ import id.developer.agungaprian.bakingapprevisi2.util.RecipeDetailItemClickListe
  */
 
 public class ListDetailRecipeActivity extends AppCompatActivity implements
-        RecipeDetailItemClickListener{
+        RecipeDetailItemClickListener, ListDetailStepRecipeFragment.RecipeDetailItemClickListener {
     private ArrayList<Recipes> recipes;
     ActionBar actionBar;
     String recipesName;

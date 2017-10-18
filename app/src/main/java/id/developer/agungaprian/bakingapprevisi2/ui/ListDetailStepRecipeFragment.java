@@ -64,8 +64,11 @@ public class ListDetailStepRecipeFragment extends Fragment {
     private int selectedIndex;
     private String recipeName;
 
-    private RecipeDetailItemClickListener itemClickListenerOnPrevious;
-    private RecipeDetailItemClickListener itemClickListenerOnNext;
+    private RecipeDetailItemClickListener itemClickListener;
+
+    public interface RecipeDetailItemClickListener {
+        void itemClickListener(List<Steps> stepOut, int itemPosition, String recipeName);
+    }
 
     public ListDetailStepRecipeFragment() {
     }
@@ -74,7 +77,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recipes = new ArrayList<>();
         steps = new ArrayList<>();
-
+        itemClickListener = (ListDetailRecipeActivity)getActivity();
 
         if (savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList(getString(R.string.selected_recipe));
@@ -227,48 +230,37 @@ public class ListDetailStepRecipeFragment extends Fragment {
     }
 
     public void buttonClickListener(){
-
-
-        itemClickListenerOnPrevious = new RecipeDetailItemClickListener() {
+        previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void itemClickListener(List<Steps> stepOut, int itemPosition, final String recipeName) {
-                previousButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (steps.get(selectedIndex).getId() > 0) {
-                            if (player!=null){
-                                player.stop();
-                            }
-                            itemClickListenerOnPrevious.itemClickListener(steps,steps.get(selectedIndex).getId() - 1,recipeName);
-                        }
-                        else {
-                            Toast.makeText(getActivity(),"You are in the first step", Toast.LENGTH_SHORT).show();
-                        }
+            public void onClick(View v) {
+                if (steps.get(selectedIndex).getId() > 0) {
+                    if (player!=null){
+                        player.stop();
                     }
-                });
+                    itemClickListener.itemClickListener(steps,steps.get(selectedIndex).getId() - 1,recipeName);
+                }
+                else {
+                    previousButton.setEnabled(false);
+                    Toast.makeText(getActivity(),"You are in the first step", Toast.LENGTH_SHORT).show();
+                }
             }
-        };
+        });
 
-        itemClickListenerOnNext = new RecipeDetailItemClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void itemClickListener(List<Steps> stepOut, int itemPosition, final String recipeName) {
-                nextButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int lastIndex = steps.size()-1;
-                        if (steps.get(selectedIndex).getId() < steps.get(lastIndex).getId()) {
-                            if (player!=null){
-                                player.stop();
-                            }
-                            itemClickListenerOnNext.itemClickListener(steps,steps.get(selectedIndex).getId() + 1,recipeName);
-                        }
-                        else {
-                            Toast.makeText(getContext(),"You already are in the Last step of the recipe", Toast.LENGTH_SHORT).show();
-
-                        }
+            public void onClick(View v) {
+                int lastIndex = steps.size()-1;
+                if (steps.get(selectedIndex).getId() < steps.get(lastIndex).getId()) {
+                    if (player!=null){
+                        player.stop();
                     }
-                });
+                    itemClickListener.itemClickListener(steps,steps.get(selectedIndex).getId() + 1,recipeName);
+                }
+                else {
+                    nextButton.setEnabled(false);
+                    Toast.makeText(getContext(),"You already are in the Last step of the recipe", Toast.LENGTH_SHORT).show();
+                }
             }
-        };
+        });
     }
 }
