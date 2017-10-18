@@ -1,14 +1,15 @@
 package id.developer.agungaprian.bakingapprevisi2.ui;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -28,8 +29,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +46,13 @@ public class ListDetailStepRecipeFragment extends Fragment {
     private ArrayList<Recipes> recipes;
     private List<Steps> steps;
     private String videoLink;
-    private String imageLink;
 
-    private TextView recipeDescription, noVideoAlert;
+    private Button previousButton , nextButton;
+    private TextView recipeDescription, unavailableVideoAlert;
     private ImageView imageThumbnail;
+
     // bandwidth meter to measure and estimate bandwidth
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
-
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
     private ComponentListener componentListener;
@@ -64,7 +63,9 @@ public class ListDetailStepRecipeFragment extends Fragment {
 
     private int selectedIndex;
     private String recipeName;
-    private RecipeDetailItemClickListener itemClickListener;
+
+    private RecipeDetailItemClickListener itemClickListenerOnPrevious;
+    private RecipeDetailItemClickListener itemClickListenerOnNext;
 
     public ListDetailStepRecipeFragment() {
     }
@@ -73,6 +74,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recipes = new ArrayList<>();
         steps = new ArrayList<>();
+
 
         if (savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList(getString(R.string.selected_recipe));
@@ -94,19 +96,30 @@ public class ListDetailStepRecipeFragment extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_list_step_recipe_detail, container, false);
-
+        //add image id for replace thumbnail
         imageThumbnail = (ImageView)rootView.findViewById(R.id.thumb_image);
-        noVideoAlert = (TextView)rootView.findViewById(R.id.no_video);
+
+        //add textview id for alert unavailable video
+        unavailableVideoAlert = (TextView)rootView.findViewById(R.id.no_video);
+
+        // add button id for next or previous step
+        previousButton = (Button)rootView.findViewById(R.id.previous_button);
+        nextButton = (Button)rootView.findViewById(R.id.next_button);
+
+        buttonClickListener();
+
         //add textview id for write description from json
         recipeDescription = (TextView)rootView.findViewById(R.id.recipe_step_detail_text);
         recipeDescription.setText(steps.get(selectedIndex).getDescription());
 
-
+        //init component listener for give playerstatechange
         componentListener = new ComponentListener();
+
+        //add id exoplayer view
         playerView = (SimpleExoPlayerView)rootView.findViewById(R.id.player_view);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        //get link video from json
+        //place link video from json to string called videoLink
         videoLink = steps.get(selectedIndex).getVideoURL();
 
         return rootView;
@@ -165,12 +178,13 @@ public class ListDetailStepRecipeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
+            //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
             }else {
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                noVideoAlert.setVisibility(View.VISIBLE);
+                unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -180,12 +194,13 @@ public class ListDetailStepRecipeFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
+            //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
             }else {
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                noVideoAlert.setVisibility(View.VISIBLE);
+                unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -209,5 +224,51 @@ public class ListDetailStepRecipeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle currentState) {
         super.onSaveInstanceState(currentState);
+    }
+
+    public void buttonClickListener(){
+
+
+        itemClickListenerOnPrevious = new RecipeDetailItemClickListener() {
+            @Override
+            public void itemClickListener(List<Steps> stepOut, int itemPosition, final String recipeName) {
+                previousButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (steps.get(selectedIndex).getId() > 0) {
+                            if (player!=null){
+                                player.stop();
+                            }
+                            itemClickListenerOnPrevious.itemClickListener(steps,steps.get(selectedIndex).getId() - 1,recipeName);
+                        }
+                        else {
+                            Toast.makeText(getActivity(),"You are in the first step", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        };
+
+        itemClickListenerOnNext = new RecipeDetailItemClickListener() {
+            @Override
+            public void itemClickListener(List<Steps> stepOut, int itemPosition, final String recipeName) {
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int lastIndex = steps.size()-1;
+                        if (steps.get(selectedIndex).getId() < steps.get(lastIndex).getId()) {
+                            if (player!=null){
+                                player.stop();
+                            }
+                            itemClickListenerOnNext.itemClickListener(steps,steps.get(selectedIndex).getId() + 1,recipeName);
+                        }
+                        else {
+                            Toast.makeText(getContext(),"You already are in the Last step of the recipe", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+            }
+        };
     }
 }
