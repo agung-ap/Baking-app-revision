@@ -53,12 +53,12 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
         actionBar.setTitle(recipesName);
     }
 
-    //destroy this activity when home button clicked
+    //go to backstack when home button pressed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -75,16 +75,17 @@ public class ListDetailRecipeActivity extends AppCompatActivity implements
         ListDetailStepRecipeFragment fragment = new ListDetailStepRecipeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        actionBar.setTitle(recipeName);
+        actionBar.setTitle(recipesName);
 
         Bundle stepBundle = new Bundle();
         stepBundle.putParcelableArrayList(getString(R.string.selected_recipe),(ArrayList<Steps>) stepOut);
         stepBundle.putInt("selected_index",itemPosition);
-        stepBundle.putString("Title",recipeName);
+        stepBundle.putString("Title",recipesName);
         fragment.setArguments(stepBundle);
 
         fragmentManager.beginTransaction()
                 .replace(R.id.list_recipe_detail_fragment, fragment)
+                .addToBackStack("recipe_ingredient_detail")
                 .commit();
 
         /*if (findViewById(R.id.recipe_linear_layout).getTag()!=null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {

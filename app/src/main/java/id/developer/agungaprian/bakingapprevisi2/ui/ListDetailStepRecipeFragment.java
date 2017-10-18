@@ -55,7 +55,6 @@ public class ListDetailStepRecipeFragment extends Fragment {
     public ListDetailStepRecipeFragment() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recipes = new ArrayList<>();

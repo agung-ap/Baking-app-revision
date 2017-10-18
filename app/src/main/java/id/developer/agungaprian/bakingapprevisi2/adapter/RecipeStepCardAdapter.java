@@ -57,10 +57,11 @@ public class RecipeStepCardAdapter extends RecyclerView.Adapter<RecipeStepCardAd
         holder.shortDescription.setText(data.get(position).getShortDescription());
 
         String videoUrl = data.get(position).getVideoURL();
+        //check video url is empty or not
         if (videoUrl.isEmpty()){
             holder.playIcon.setVisibility(View.GONE);
-
         }else {
+            //load play icon when video url is not empty
             Picasso.with(context)
                     .load(R.drawable.play_icon)
                     .into(holder.playIcon);
@@ -81,6 +82,8 @@ public class RecipeStepCardAdapter extends RecyclerView.Adapter<RecipeStepCardAd
             steps = (TextView)itemView.findViewById(R.id.id_list_step);
             shortDescription = (TextView)itemView.findViewById(R.id.id_title_step);
             playIcon = (ImageView)itemView.findViewById(R.id.play_icon);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override

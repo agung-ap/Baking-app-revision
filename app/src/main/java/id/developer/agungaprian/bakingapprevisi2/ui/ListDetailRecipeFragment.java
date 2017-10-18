@@ -51,12 +51,12 @@ public class ListDetailRecipeFragment extends Fragment {
 
         ingredientTitle.setText(recipesName +" Ingredient");
 
+        //looping ingredient data
         for (Ingredients data : ingredients){
             ingredient.append("\u2022 "+ data.getIngredient()+"");
             ingredient.append("\t\t "+data.getQuantity().toString()+"");
             ingredient.append("\t "+ data.getMeasure()+"\n");
         }
-
 
         //add recyclerview layout
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview_list_detail_recipe);
