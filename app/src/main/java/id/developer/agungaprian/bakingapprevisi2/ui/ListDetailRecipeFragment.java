@@ -16,6 +16,7 @@ import id.developer.agungaprian.bakingapprevisi2.R;
 import id.developer.agungaprian.bakingapprevisi2.adapter.RecipeStepCardAdapter;
 import id.developer.agungaprian.bakingapprevisi2.model.Ingredients;
 import id.developer.agungaprian.bakingapprevisi2.model.Recipes;
+import id.developer.agungaprian.bakingapprevisi2.widget.UpdateBakingService;
 
 /**
  * Created by agungaprian on 15/10/17.
@@ -51,12 +52,17 @@ public class ListDetailRecipeFragment extends Fragment {
         ingredientTitle = (TextView)rootView.findViewById(R.id.ingredient_titile);
 
         ingredientTitle.setText(recipesName +" Ingredient");
+        ArrayList<String> recipeIngredientsForWidgets= new ArrayList<>();
 
         //looping ingredient data
         for (Ingredients data : ingredients){
             ingredient.append("\u2022 "+ data.getIngredient()+"");
             ingredient.append("\t\t "+data.getQuantity().toString()+"");
             ingredient.append("\t "+ data.getMeasure()+"\n");
+
+            recipeIngredientsForWidgets.add(data.getIngredient()+"\n"+
+                    "Quantity: "+data.getQuantity().toString()+"\n"+
+                    "Measure: "+data.getMeasure()+"\n");
         }
 
         //add recyclerview layout
@@ -66,6 +72,9 @@ public class ListDetailRecipeFragment extends Fragment {
         recipeDetailCardAdapter = new RecipeStepCardAdapter((ListDetailRecipeActivity)getActivity());
         recyclerView.setAdapter(recipeDetailCardAdapter);
         recipeDetailCardAdapter.masterRecipeData(recipes, getContext());
+
+        //update widget
+        UpdateBakingService.startBakingService(getContext(),recipeIngredientsForWidgets);
         return rootView;
     }
 

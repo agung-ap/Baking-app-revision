@@ -18,7 +18,7 @@
         android:src="@drawable/thumb_image"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/player_view"/>
+        android:layout_alignParentTop="true"/>
 
     <TextView
         android:id="@+id/no_video"

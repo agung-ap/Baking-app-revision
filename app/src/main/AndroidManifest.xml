@@ -14,13 +14,27 @@
         <activity android:name=".ui.ListRecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ui.ListDetailRecipeActivity"/>
 
+        <service android:name=".widget.UpdateBakingService" />
+        <service
+            android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver android:name=".widget.BakingWidgetProvider" android:icon="@drawable/thumb_image">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE2" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
