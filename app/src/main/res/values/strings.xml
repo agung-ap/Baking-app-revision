@@ -3,5 +3,7 @@
     <string name="title_activity_list_detail_recipe">ListDetailRecipeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="selected_recipe">selected_recipe</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

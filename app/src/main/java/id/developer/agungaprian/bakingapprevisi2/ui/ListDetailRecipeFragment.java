@@ -16,7 +16,6 @@ import id.developer.agungaprian.bakingapprevisi2.R;
 import id.developer.agungaprian.bakingapprevisi2.adapter.RecipeStepCardAdapter;
 import id.developer.agungaprian.bakingapprevisi2.model.Ingredients;
 import id.developer.agungaprian.bakingapprevisi2.model.Recipes;
-import id.developer.agungaprian.bakingapprevisi2.widget.UpdateBakingService;
 
 /**
  * Created by agungaprian on 15/10/17.
@@ -74,7 +73,7 @@ public class ListDetailRecipeFragment extends Fragment {
         recipeDetailCardAdapter.masterRecipeData(recipes, getContext());
 
         //update widget
-        UpdateBakingService.startBakingService(getContext(),recipeIngredientsForWidgets);
+        //UpdateBakingService.startBakingService(getContext(),recipeIngredientsForWidgets);
         return rootView;
     }
 
