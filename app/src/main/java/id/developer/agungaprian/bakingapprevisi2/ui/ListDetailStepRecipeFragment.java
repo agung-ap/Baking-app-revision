@@ -15,6 +15,9 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.dash.DashChunkSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -26,7 +29,9 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
@@ -56,6 +61,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
     private ComponentListener componentListener;
+    private DataSource.Factory mediaDataSourceFactory;
 
     private long playbackPosition;
     private int currentWindow;
@@ -78,6 +84,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
         recipes = new ArrayList<>();
         steps = new ArrayList<>();
         itemClickListener = (ListDetailRecipeActivity)getActivity();
+        mediaDataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), "mediaPlayerSample"), (TransferListener<? super DataSource>) BANDWIDTH_METER);
 
         if (savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList(getString(R.string.selected_recipe));
@@ -143,7 +150,11 @@ public class ListDetailStepRecipeFragment extends Fragment {
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
         }
-        MediaSource mediaSource = buildMediaSource(Uri.parse(videoLink));
+
+        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoLink),mediaDataSourceFactory,
+                extractorsFactory,null,null);
         player.prepare(mediaSource, true, false);
     }
 
@@ -180,7 +191,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 17) {
             //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
@@ -196,7 +207,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         hideSystemUi();
-        if ((Util.SDK_INT <= 23 || player == null)) {
+        if ((Util.SDK_INT <= 17 || player == null)) {
             //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
@@ -211,7 +222,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+        if (Util.SDK_INT <= 17) {
             releasePlayer();
         }
     }
@@ -219,7 +230,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 17) {
             releasePlayer();
         }
     }
