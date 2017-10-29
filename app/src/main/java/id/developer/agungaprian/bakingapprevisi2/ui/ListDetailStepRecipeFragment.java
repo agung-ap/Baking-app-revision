@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +199,11 @@ public class ListDetailStepRecipeFragment extends Fragment {
             }else {
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                unavailableVideoAlert.setVisibility(View.VISIBLE);
+                Picasso.with(getContext())
+                        .load(steps.get(selectedIndex).getThumbnailURL())
+                        .error(R.drawable.thumb_image)
+                        .into(imageThumbnail);
+                //unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -214,7 +219,11 @@ public class ListDetailStepRecipeFragment extends Fragment {
             }else {
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                unavailableVideoAlert.setVisibility(View.VISIBLE);
+                Picasso.with(getContext())
+                        .load(steps.get(selectedIndex).getThumbnailURL())
+                        .error(R.drawable.thumb_image)
+                        .into(imageThumbnail);
+                //unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
