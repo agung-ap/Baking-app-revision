@@ -6,60 +6,9 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
         android:layout_alignParentTop="true"/>
 
-    <ImageView
-        android:id="@+id/thumb_image"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/thumb_image"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"/>
 
-    <TextView
-        android:id="@+id/no_video"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thumb_image"
-        android:text="no video available"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/recipe_step_detail_text"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_below="@+id/no_video"/>
-
-    <LinearLayout
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/previous_button"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Prev"/>
-
-        <Button
-            android:id="@+id/next_button"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Next"/>
-    </LinearLayout>
 </RelativeLayout>
