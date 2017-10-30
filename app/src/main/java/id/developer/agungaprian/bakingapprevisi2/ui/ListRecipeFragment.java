@@ -1,5 +1,7 @@
 package id.developer.agungaprian.bakingapprevisi2.ui;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 
 import id.developer.agungaprian.bakingapprevisi2.R;
 import id.developer.agungaprian.bakingapprevisi2.adapter.RecipeCardAdapter;
+import id.developer.agungaprian.bakingapprevisi2.idlingResource.SimpleIdlingResource;
 import id.developer.agungaprian.bakingapprevisi2.model.Recipes;
 import id.developer.agungaprian.bakingapprevisi2.network.RetrofitBuilder;
 import id.developer.agungaprian.bakingapprevisi2.network.RetrofitInterface;
@@ -48,6 +51,13 @@ public class ListRecipeFragment extends Fragment{
         RetrofitInterface iRecipe = RetrofitBuilder.retrieveData();
         Call<ArrayList<Recipes>> recipe = iRecipe.getRecipeData();
 
+        SimpleIdlingResource idlingResource = (SimpleIdlingResource)((ListRecipeActivity)getActivity()).getIdlingResource();
+
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         recipe.enqueue(new Callback<ArrayList<Recipes>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipes>> call, Response<ArrayList<Recipes>> response) {
@@ -74,4 +84,6 @@ public class ListRecipeFragment extends Fragment{
 
         getRequestData();
     }
+
+
 }

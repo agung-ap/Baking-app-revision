@@ -34,7 +34,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.appwidget_text, appPendingIntent);
 
-        // Set the GridWidgetService intent to act as the adapter for the GridView
+        // Set the ListWidgetService intent to act as the adapter for the GridView
         Intent intent = new Intent(context, RecipeWidgetService.class);
         views.setRemoteAdapter(R.id.appwidget_text, intent);
 
