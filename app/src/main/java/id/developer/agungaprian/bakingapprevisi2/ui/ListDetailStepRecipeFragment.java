@@ -52,6 +52,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
     private ArrayList<Recipes> recipes;
     private List<Steps> steps;
     private String videoLink;
+    private String thumbnailLink;
 
     private Button previousButton , nextButton;
     private TextView recipeDescription, unavailableVideoAlert;
@@ -133,6 +134,7 @@ public class ListDetailStepRecipeFragment extends Fragment {
         //place link video from json to string called videoLink
         videoLink = steps.get(selectedIndex).getVideoURL();
 
+        thumbnailLink = steps.get(selectedIndex).getThumbnailURL();
         return rootView;
     }
 
@@ -196,14 +198,19 @@ public class ListDetailStepRecipeFragment extends Fragment {
             //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
-            }else {
+            }else if (videoLink.isEmpty() && !thumbnailLink.isEmpty()){
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                Picasso.with(getContext())
+
+                Picasso.with(getActivity())
                         .load(steps.get(selectedIndex).getThumbnailURL())
                         .error(R.drawable.thumb_image)
                         .into(imageThumbnail);
                 //unavailableVideoAlert.setVisibility(View.VISIBLE);
+            }else if (videoLink.isEmpty() && thumbnailLink.isEmpty()){
+                playerView.setVisibility(View.GONE);
+                imageThumbnail.setVisibility(View.VISIBLE);
+                unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -216,14 +223,19 @@ public class ListDetailStepRecipeFragment extends Fragment {
             //check if video url not empty
             if (!videoLink.isEmpty()){
                 initializePlayer();
-            }else {
+            }else if (videoLink.isEmpty() && !thumbnailLink.isEmpty()){
                 playerView.setVisibility(View.GONE);
                 imageThumbnail.setVisibility(View.VISIBLE);
-                Picasso.with(getContext())
+
+                Picasso.with(getActivity())
                         .load(steps.get(selectedIndex).getThumbnailURL())
-                        .error(R.drawable.thumb_image)
+                        .placeholder(R.drawable.thumb_image)
                         .into(imageThumbnail);
                 //unavailableVideoAlert.setVisibility(View.VISIBLE);
+            }else if (videoLink.isEmpty() && thumbnailLink.isEmpty()){
+                playerView.setVisibility(View.GONE);
+                imageThumbnail.setVisibility(View.VISIBLE);
+                unavailableVideoAlert.setVisibility(View.VISIBLE);
             }
         }
     }
